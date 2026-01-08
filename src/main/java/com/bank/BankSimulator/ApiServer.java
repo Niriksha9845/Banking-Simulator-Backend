@@ -69,6 +69,12 @@ public class ApiServer {
 			return "Transfer successfully..!";
 			
 		});
+ // CUT THIS BLOCK (Ctrl + X)
+get("/accounts/all", (req, res) -> {
+    System.out.println("/accounts/all api is called");
+    res.type("application/json");
+    return gson.toJson(accountService.listAll());
+});
 		
 		
 		get("/accounts/:accNo",(req,res) ->{
@@ -86,12 +92,7 @@ public class ApiServer {
 			}
 		});
 		
-		get("/accounts/all",(req,res) -> {
-			System.out.println("/accounts/all api is called");
-			res.type("application/json");
-			return gson.toJson(accountService.listAll());
-			
-		});
+		
 		
 		
 		
