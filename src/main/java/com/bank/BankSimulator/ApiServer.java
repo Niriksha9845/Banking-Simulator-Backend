@@ -33,8 +33,6 @@ public class ApiServer {
 		TransactionService trxService = new TransactionService(accountService,trxRepo,alertService);
 		
 		System.out.println("Spark server started on port number 8080");
-		get("/ping", (req, res) -> "pong");
-
 		
 		//create Account API
 		post("/accounts/create",(req, res) -> {
@@ -45,20 +43,7 @@ public class ApiServer {
 			Account acc = accountService.createAccount(data.name, data.email, data.balance);
 			return gson.toJson(acc);
 			
-		
-
-			
 		});
-		// Get Account Details API
-		get("/accounts/:accNo", (req, res) -> {
-		    String accNo = req.params(":accNo");
-		    System.out.println("/accounts/" + accNo + " api is called");
-		    res.type("application/json");
-
-		    Account acc = accountService.getAccount(accNo);
-		    return gson.toJson(acc);
-		});
-
 		
 		
 		//Deposite API
@@ -68,26 +53,50 @@ public class ApiServer {
 			  trxService.deposite(data.accNo, data.amount);
 			  return "Deposite successfully..!";
 		});
+		
 		//Withdraw API
 		post("/transactions/withdraw",(req, res) ->{
-		    System.out.println("/transactions/withdraw api is called");
-		    TxRequest data = gson.fromJson(req.body(), TxRequest.class);
-		    trxService.withdraw(data.accNo, data.amount);
-		    return "Withdraw successfully..!";
+			System.out.println("/transactions/withdraw api is called");
+			TxRequest data = gson.fromJson(req.body(), TxRequest.class);
+			trxService.withdraw(data.accNo, data.amount);
+			return "Withdraw successfully..!";
 		});
-
-		//Transfer API
+		
 		post("/transactions/transfer",(req, res) -> {
-		    System.out.println("/transactions/transfer api is called");
-		    TransferRequest data = gson.fromJson(req.body(), TransferRequest.class);
-		    trxService.tranfer(data.fromAcc, data.toAcc, data.amount);
-		    return "Transfer successfully..!";
+			System.out.println("/transactions/tranfer api is called");
+			TransferRequest data = gson.fromJson(req.body(), TransferRequest.class);
+			trxService.tranfer(data.fromAcc, data.toAcc, data.amount);
+			return "Transfer successfully..!";
+			
 		});
-
-
+		
+		
+		get("/accounts/:accNo",(req,res) ->{
+			System.out.println("/accounts/acc api is called");
+			res.type("application/json");
+			String accNo = req.params("accNo");
+			try {
+				Account acc = accountService.getAccount(accNo);
+				return gson.toJson(acc);
+				
+			}
+			catch(Exception e) {
+				res.status(404);
+				return gson.toJson("Account not found");
+			}
+		});
+		
+		get("/accounts/all",(req,res) -> {
+			System.out.println("/accounts/all api is called");
+			res.type("application/json");
+			return gson.toJson(accountService.listAll());
+			
+		});
+		
+		
+		
 		
 	}
-	
 	
 	public static void enableCORS(){
 		options("/*",(request ,response) ->{

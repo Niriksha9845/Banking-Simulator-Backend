@@ -18,8 +18,8 @@ import javax.mail.internet.MimeMessage;
  
 public class EmailUtil{
 	
-	private static final String FROM_EMAIL = "harikrishnahh403@gmail.com";
-	private static final String APP_PASSWORD = "jnou cnid dtvm qfib";
+	private static final String FROM_EMAIL = "navyan1809@gmail.com";
+	private static final String APP_PASSWORD = "thww gqfm fnpy bpou";
 	
 	public static void sendEmail(String to ,String subject, String body){
 		Properties props = new Properties();
