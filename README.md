@@ -1,1 +1,1 @@
-# Banking-Simulator-Backend
+# banking-simulator
